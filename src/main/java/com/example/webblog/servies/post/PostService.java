@@ -52,6 +52,7 @@ public class PostService implements IPostService {
         for (Post post : postRepository.findAll()) {
             posts.add(PostMapper.postModelToPostRequest(post));
         }
+        posts.sort((o1, o2) -> o2.getCreateAt().compareTo(o1.getCreateAt()));
         return posts;
     }
 

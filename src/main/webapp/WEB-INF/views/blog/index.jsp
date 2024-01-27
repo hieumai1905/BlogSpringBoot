@@ -9,7 +9,7 @@
     <meta name="keywords" content="Foodeiblog, unica, creative, html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Foodeiblog | Template</title>
+    <title>Foodeiblog</title>
 
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:300,400,600,700,800,900&display=swap"
@@ -154,7 +154,7 @@
                         <span style="position: absolute; top: 80%;
                             left: 15%; transform: translate(-50%, -50%);
                             color: white; font-size: 35px; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);">${img.description}</span>
-                        <img src="../static${img.link}" height="400" class="d-block w-100" alt="Slide ${i + 1}">
+                        <img src="../static${img.link}" height="500" class="d-block w-100" alt="Slide ${i + 1}">
                     </div>
                     <c:set var="i" value="${i + 1}" />
                 </c:forEach>

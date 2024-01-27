@@ -22,12 +22,13 @@ $(window).ready(function() {
       // Xóa nút Edit và nút Cancel
       $(this).remove();
       $(`.edit-save[data-comment-id="${commentId}"]`).remove();
+      $('#edit-icon-'+commentId).show();
    });
 
    // Bắt sự kiện click trên nút Edit để lưu nội dung mới từ textarea
    $(document).on('click', '.edit-save', function() {
       let commentId = $(this).data('comment-id');
-      let textareaContent = $(`#edit-comment-textarea-${commentId}`).val();
+      let textareaContent = $(`#edit-comment-textarea-${commentId}`).val().trim();
 
       saveComment(true, parseInt(commentId, 10), textareaContent);
 
@@ -40,6 +41,7 @@ $(window).ready(function() {
       // Xóa nút Edit và nút Cancel
       $(this).remove();
       $(`.edit-cancel[data-comment-id="${commentId}"]`).remove();
+      $('#edit-icon-'+commentId).show();
    });
 
    $(".btnrating").on('click',(function(e) {
@@ -48,6 +50,11 @@ $(window).ready(function() {
       showRating(selected_value);
       createOrUpdateRate(parseInt(selected_value, 10));
    }));
+
+   $(document).on('click', '.delete-comment', function(e) {
+      let commentId = $(this).attr('id').split('-')[2];
+      deleteComment(commentId);
+   });
 
 });
 
@@ -105,7 +112,7 @@ function getPostDetails(postId){
 function saveComment(isUpdate, commentId, content){
    const postId = $('#postId').val();
    const commentRequest = {
-      content: $('#comment').val(),
+      content: $('#comment').val().trim(),
       postId: postId,
       commentId: null
    }
@@ -134,6 +141,22 @@ function saveComment(isUpdate, commentId, content){
       }
    });
 
+}
+
+function deleteComment(commentId){
+   if(confirm("Do you want to delete this comment?") === true){
+      $.ajax({
+         url: `/api/comments/${commentId}`,
+         type: 'DELETE',
+         success: function(response) {
+            console.log('Comment deleted successfully');
+            getComments($('#postId').val());
+         },
+         error: function(xhr, status, error) {
+            console.error('Error deleting comment:', error);
+         }
+      });
+   }
 }
 
 function getComments(postId){
@@ -165,6 +188,7 @@ function loadCommentToScreen(data){
       let editIcon =
           `<ul>
              <li><a id="edit-icon-${comment.commentId}" class="edit-comment"><i class="fa fa-edit"></i></a></li>
+             <li><a id="delete-icon-${comment.commentId}" class="delete-comment"><i class="fa fa-trash"></i></a></li>
            </ul>`;
 
       if(parseInt($('#userId').val(), 10) !== comment.accountId){
@@ -201,6 +225,7 @@ function loadCommentToScreen(data){
       // Thay thế phần tử p bằng textarea và thêm nút Edit và nút Cancel
       $(`#comment-content-${commentId}`).replaceWith(textarea);
       $(`#edit-icon-${commentId}`).closest('li').append(editButton + cancelButton);
+      $(this).hide();
    });
 }
 

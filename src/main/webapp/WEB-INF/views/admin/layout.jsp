@@ -14,7 +14,7 @@
   <meta name="description"
         content="Ample Admin Lite is powerful and clean admin dashboard template, inpired from Bootstrap Framework">
   <meta name="robots" content="noindex,nofollow">
-  <title>Ample Admin Lite Template by WrapPixel</title>
+  <title>Admin</title>
   <link rel="canonical" href="https://www.wrappixel.com/templates/ample-admin-lite/" />
   <!-- Favicon icon -->
   <link rel="icon" type="image/png" sizes="16x16" href="../static/admin/plugins/images/favicon.png">
@@ -118,7 +118,7 @@
           <!-- User profile and search -->
           <!-- ============================================================== -->
           <li>
-            <a class="profile-pic" href="#">
+            <a class="profile-pic" href="/info">
               <img src="../static/admin/plugins/images/users/varun.jpg" alt="user-img" width="36"
                    class="img-circle"><span class="text-white font-medium">${sessionScope['account-login'].fullname}</span></a>
           </li>
@@ -213,6 +213,9 @@
     </c:if>
     <c:if test="${requestScope['content-in-layout'] eq 'type'}">
       <jsp:include page="type.jsp"/>
+    </c:if>
+    <c:if test="${requestScope['content-in-layout'] eq 'profile'}">
+      <jsp:include page="profile.jsp"/>
     </c:if>
     <c:if test="${requestScope['content-in-layout'] eq 'user'}">
       <jsp:include page="user.jsp"/>

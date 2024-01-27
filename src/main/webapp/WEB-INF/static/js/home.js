@@ -3,7 +3,7 @@ let pageSize = 9;
 let totalElements = 0;
 let loadMore = true;
 let accounts = [];
-$(window).ready(function() {
+$(window).ready(function () {
     loadUsers();
     loadCategories();
     loadTypes();
@@ -12,12 +12,12 @@ $(window).ready(function() {
 
     $('#btnLoad').on('click', loadPostByPageIndex);
 
-    $(document).on('click', '.category-li', function() {
+    $(document).on('click', '.category-li', function () {
         const categoryId = parseInt($(this).attr('id'), 10);
         getPostsByCategoryId(categoryId);
     });
 
-    $(document).on('click', '.type-li', function() {
+    $(document).on('click', '.type-li', function () {
         const typeId = parseInt($(this).attr('id'), 10);
         getPostsByTypeId(typeId);
     });
@@ -31,16 +31,16 @@ function loadUsers() {
         url: '/api/accounts',
         type: 'GET',
         dataType: 'json',
-        success: function(data) {
+        success: function (data) {
             accounts = data;
         },
-        error: function(xhr, status, error) {
+        error: function (xhr, status, error) {
             console.error(error);
         }
     });
 }
 
-function loadPostByPageIndex(){
+function loadPostByPageIndex() {
     if (loadMore) {
         $(this).text('Load More');
         pageIndex++;
@@ -49,13 +49,13 @@ function loadPostByPageIndex(){
         pageIndex--;
     }
     var data = $('#data').children();
-    if(data.length <= 9)
+    if (data.length <= 9)
         return;
-    data.each(function(index) {
-        if(index < pageIndex * pageSize){
-            if($(this).hasClass('d-none'))
+    data.each(function (index) {
+        if (index < pageIndex * pageSize) {
+            if ($(this).hasClass('d-none'))
                 $(this).removeClass('d-none');
-        }else{
+        } else {
             if (!$(this).hasClass('d-none'))
                 $(this).addClass('d-none');
         }
@@ -67,67 +67,67 @@ function loadPostByPageIndex(){
     }
 }
 
-function loadPosts(){
+function loadPosts() {
     $.ajax({
         url: '/api/posts',
         type: 'GET',
         dataType: 'json',
-        success: function(data) {
+        success: function (data) {
             showPostsToScreen(data);
         },
-        error: function(xhr, status, error) {
+        error: function (xhr, status, error) {
             console.error(error);
         }
     });
 }
 
-function getPostsByCategoryId(categoryId){
+function getPostsByCategoryId(categoryId) {
     $.ajax({
         url: `/api/posts/categories/${categoryId}`,
         type: 'GET',
-        success: function(response) {
+        success: function (response) {
             // Xử lý dữ liệu trả về tại đây
             console.log(response);
             showPostsToScreen(response);
         },
-        error: function(error) {
+        error: function (error) {
             console.log(error);
             $('#data').empty();
         }
     });
 }
 
-function getPostsByTypeId(typeId){
+function getPostsByTypeId(typeId) {
     $.ajax({
         url: `/api/posts/types/${typeId}`,
         type: 'GET',
-        success: function(response) {
+        success: function (response) {
             // Xử lý dữ liệu trả về tại đây
             console.log(response);
             showPostsToScreen(response);
         },
-        error: function(error) {
+        error: function (error) {
             console.log(error);
             $('#data').empty();
         }
     });
 }
 
-function getPostByTitle(){
+function getPostByTitle() {
     const text = $('#searchText').val();
-    if(text === ''){
+    if (text === '') {
         loadPosts();
         return;
     }
     $.ajax({
         url: '/api/posts/search/' + encodeURIComponent(text),
         type: 'GET',
-        success: function(response) {
+        success: function (response) {
             // Xử lý dữ liệu trả về ở đây
             console.log(response);
             showPostsToScreen(response);
         },
-        error: function(error) {
+        error: function (error) {
             // Xử lý lỗi ở đây
             console.error(error);
             $('#data').empty();
@@ -136,23 +136,25 @@ function getPostByTitle(){
 
 }
 
-function showPostsToScreen(data){
+function showPostsToScreen(data) {
     $('#data').empty();
     totalElements = 0;
     pageIndex = 1;
 
-    if(data.length > 0)
+    if (data.length > 0)
         data = data.filter(p => p.status === 1);
 
-    data.forEach(function(post) {
+    data.forEach(function (post) {
         totalElements++;
         const formattedDate = formatDate(new Date(post.createAt));
         const picture = '../static' + post.picture;
         const hiddenClass = totalElements > pageSize ? 'd-none' : '';
         let author = '';
-        for(let i = 0; i < accounts.length; i++){
-            if(accounts[i].accountId === post.accountId){
+        let link = '';
+        for (let i = 0; i < accounts.length; i++) {
+            if (accounts[i].accountId === post.accountId) {
                 author = accounts[i].fullname;
+                link = '/users?id=' + accounts[i].accountId;
                 break;
             }
         }
@@ -170,7 +172,8 @@ function showPostsToScreen(data){
                         <span class="post__label">Recipe</span>
                         <h3><a href="/blog/single-post?id=${post.postId}">${post.title}</a></h3>
                         <ul class="post__widget">
-                            <li>by <span>${author}</span></li>
+<!--                            <li>by <span>${author}</span></li>-->
+                            <li>by <a href="${link}">${author}</a></li>
                         </ul>
                         <p>${post.briefContent}</p>
                     </div>
@@ -203,16 +206,16 @@ function loadCategories() {
         url: '/api/categories',
         type: 'GET',
         dataType: 'json',
-        success: function(data) {
+        success: function (data) {
             $('#category-ul').empty();
 
-            data.forEach(function(category) {
+            data.forEach(function (category) {
                 $('#category-ul').append(
                     `<a class="category-li" id="${category.categoryId}" style="text-align: left; padding: 10px;">${category.nameCategory}</a>`
                 );
             });
         },
-        error: function(xhr, status, error) {
+        error: function (xhr, status, error) {
             console.error(error);
         }
     });
@@ -223,16 +226,16 @@ function loadTypes() {
         url: '/api/types',
         type: 'GET',
         dataType: 'json',
-        success: function(data) {
+        success: function (data) {
             $('#type-ul').empty();
 
-            data.forEach(function(type) {
+            data.forEach(function (type) {
                 $('#type-ul').append(
                     `<a class="type-li" id="${type.typeId}" style="text-align: left; padding: 10px;">${type.typeName}</a>`
                 );
             });
         },
-        error: function(xhr, status, error) {
+        error: function (xhr, status, error) {
             console.error(error);
         }
     });

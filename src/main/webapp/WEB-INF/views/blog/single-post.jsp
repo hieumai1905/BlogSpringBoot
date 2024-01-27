@@ -9,7 +9,7 @@
   <meta name="keywords" content="Foodeiblog, unica, creative, html">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Foodeiblog | Template</title>
+  <title>Foodeiblog</title>
 
   <!-- Google Font -->
   <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:300,400,600,700,800,900&display=swap"
@@ -26,18 +26,101 @@
 </head>
 
 <body>
+<!-- Page Preloder -->
+<div id="preloder">
+  <div class="loader"></div>
+</div>
+
+<!-- Humberger Begin -->
+<div class="humberger__menu__overlay"></div>
+<div class="humberger__menu__wrapper">
+  <div class="humberger__menu__logo">
+    <a href="./index.html"><img src="../../static/img/humberger/humberger-logo.png" alt=""></a>
+  </div>
+  <nav class="humberger__menu__nav mobile-menu">
+    <ul>
+      <li><a href="/blog">Home</a></li>
+      <li><a href="#">Recipes</a></li>
+      <li><a href="#">Dinner</a></li>
+      <li><a href="#">Desserts</a></li>
+      <li class="dropdown"><a href="#">Pages</a>
+        <ul class="dropdown__menu">
+          <li><a href="./categories-grid.html">Categories Grid</a></li>
+          <li><a href="./categories-list.html">Categories List</a></li>
+          <li><a href="./single-post.html">Single Post</a></li>
+          <li><a href="./signin.html">Sign In</a></li>
+          <li><a href="./404.html">404</a></li>
+          <li><a href="./typography.html">Typography</a></li>
+        </ul>
+      </li>
+      <li><a href="./about.html">About</a></li>
+      <li><a href="./contact.html">Contact</a></li>
+    </ul>
+  </nav>
+  <div id="mobile-menu-wrap"></div>
+  <div class="humberger__menu__about">
+    <div class="humberger__menu__title sidebar__item__title">
+      <h6>About me</h6>
+    </div>
+    <img src="../../static/img/humberger/humberger-about.jpg" alt="">
+    <h6>Hi every one! I,m Lena Mollein.</h6>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+      dolore magna aliqua.</p>
+    <div class="humberger__menu__about__social sidebar__item__follow__links">
+      <a href="#"><i class="fa fa-facebook"></i></a>
+      <a href="#"><i class="fa fa-twitter"></i></a>
+      <a href="#"><i class="fa fa-youtube-play"></i></a>
+      <a href="#"><i class="fa fa-instagram"></i></a>
+      <a href="#"><i class="fa fa-envelope-o"></i></a>
+    </div>
+  </div>
+  <div class="humberger__menu__subscribe">
+    <div class="humberger__menu__title sidebar__item__title">
+      <h6>Subscribe</h6>
+    </div>
+    <p>Subscribe to our newsletter and get our newest updates right on your inbox.</p>
+    <form action="#">
+      <input type="text" class="email-input" placeholder="Your email">
+      <label for="agree-check">
+        I agree to the terms & conditions
+        <input type="checkbox" id="agree-check">
+        <span class="checkmark"></span>
+      </label>
+      <button type="submit" class="site-btn">Subscribe</button>
+    </form>
+  </div>
+</div>
+<!-- Humberger End -->
 
 <!-- Header Section Begin -->
 <header class="header">
   <div class="header__top">
     <div class="container">
       <div class="row">
-        <div class="col-lg-12 col-md-10 order-md-2 order-3">
+        <div class="col-lg-2 col-md-1 col-6 order-md-1 order-1">
+          <div class="header__humberger">
+            <i class="fa fa-bars humberger__open"></i>
+          </div>
+        </div>
+        <div class="col-lg-8 col-md-10 order-md-2 order-3">
           <nav class="header__menu">
             <ul>
               <li><a href="/blog">Home</a></li>
+              <c:set var="userRole" value="${sessionScope['user-role']}"/>
+              <c:if test="${userRole == 'ROLE_ADMIN'}">
+                <li><a href="/admin">Admin</a></li>
+              </c:if>
+              <c:if test="${userRole == 'ROLE_USER'}">
+                <li><a href="/admin/posts">My Posts</a></li>
+              </c:if>
+              <li><a href="/logout">Logout</a></li>
             </ul>
           </nav>
+        </div>
+        <div class="col-lg-2 col-md-1 col-6 order-md-3 order-2">
+          <div class="header__search">
+            <i class="fa fa-search search-switch"></i>
+          </div>
         </div>
       </div>
     </div>
@@ -45,6 +128,9 @@
   <div class="container">
     <div class="row">
       <div class="col-lg-3 col-md-3">
+        <div class="header__btn">
+          <a href="./signin.html" class="primary-btn">Subscribe</a>
+        </div>
       </div>
       <div class="col-lg-6 col-md-6">
         <div class="header__logo">
@@ -69,7 +155,7 @@
 <section class="single-post spad">
   <input id="postId" value="${requestScope['postId']}" type="hidden"/>
   <input id="userId" value="${sessionScope['account-login'].accountId}" type="hidden"/>
-  <div id="picture" class="single-post__hero set-bg" data-setbg="../../static/img/categories/single-post/single-post-hero.jpg"></div>
+  <div id="picture" class="single-post__hero set-bg" data-setbg="../../static/img/categories/single-post/single-post-hero.jpg" style="max-height: 700px"></div>
   <div class="container">
     <div class="row d-flex justify-content-center">
       <div class="col-lg-8">

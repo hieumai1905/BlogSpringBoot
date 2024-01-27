@@ -11,7 +11,7 @@
 </div>
 
 <div class="container-fluid">
-    <div class="row justify-content-center">
+    <div class="row">
         <div class="col-lg-4 col-md-12">
             <div class="white-box analytics-info">
                 <h3 class="box-title">Total Account</h3>
